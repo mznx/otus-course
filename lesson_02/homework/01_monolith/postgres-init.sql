@@ -1,0 +1,14 @@
+CREATE TABLE "users" (
+    id text primary key,
+    first_name text NOT NULL,
+    second_name text NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
+);
+
+CREATE TABLE "user_auth" (
+    user_id text NOT NULL,
+    pass_hash text NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
+);
