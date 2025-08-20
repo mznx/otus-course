@@ -2,25 +2,30 @@ package main
 
 import (
 	"monolith/controller"
+	"monolith/infrastructure/storage"
+	"monolith/infrastructure/storage/postgres"
+	"monolith/service"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
 func main() {
-	r := initRouter()
+	s := storage.Connect()
+	defer s.Disconnect()
 
-	http.ListenAndServe(":3000", r)
-}
+	repositories := postgres.NewRepository(s.GetDB())
 
-func initRouter() chi.Router {
+	services := service.NewService(repositories)
+
 	router := chi.NewRouter()
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	controller.UserRouter(router)
+	controller.AuthRouter(router, services)
+	controller.UserRouter(router, services)
 
-	return router
+	http.ListenAndServe(":3000", router)
 }
