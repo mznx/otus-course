@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"monolith/domain/user"
 	"monolith/helper"
 )
@@ -23,18 +24,26 @@ func NewUserLoginService(userRepository user.Repository) *UserLoginService {
 	return &UserLoginService{userRepository: userRepository}
 }
 
-func (s *UserLoginService) Handle(ctx context.Context, data LoginRequest) LoginResponse {
+func (s *UserLoginService) Handle(ctx context.Context, data LoginRequest) (*LoginResponse, error) {
 	passHash, err := s.userRepository.GetPasswordHash(ctx, data.UserID)
 
 	if err != nil {
-		// err
+		return nil, err
 	}
 
 	isValid := helper.IsValidPassword(passHash, data.Password)
 
 	if !isValid {
-		// err
+		return nil, errors.New("incorrect password")
 	}
 
-	return LoginResponse{Token: "user" + data.UserID}
+	token := helper.GenerateAuthToken(data.UserID)
+
+	err = s.userRepository.UpdateAuthToken(ctx, data.UserID, token)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoginResponse{Token: token}, nil
 }

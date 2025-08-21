@@ -42,6 +42,14 @@ func (r *UserPgRepository) GetPasswordHash(ctx context.Context, userId string) (
 	return ua.PassHash, nil
 }
 
+func (r *UserPgRepository) UpdateAuthToken(ctx context.Context, userId string, token string) error {
+	if _, err := r.db.ExecContext(ctx, "UPDATE user_auth SET token=$1 WHERE user_id=$2", token, userId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *UserPgRepository) Create(ctx context.Context, user *user.User, passHash string) error {
 	return runInTx(r.db, func(tx *sql.Tx) error {
 		_, err := tx.ExecContext(ctx, "INSERT INTO users (id, first_name, second_name) VALUES ($1, $2, $3)", user.ID, user.FirstName, user.SecondName)
@@ -49,7 +57,7 @@ func (r *UserPgRepository) Create(ctx context.Context, user *user.User, passHash
 			return err
 		}
 
-		_, err = tx.ExecContext(ctx, "INSERT INTO user_auth (user_id, pass_hash) VALUES ($1, $2)", user.ID, passHash)
+		_, err = tx.ExecContext(ctx, "INSERT INTO user_auth (user_id, pass_hash, token) VALUES ($1, $2, $3)", user.ID, passHash, passHash)
 		if err != nil {
 			return err
 		}

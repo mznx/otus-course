@@ -20,7 +20,13 @@ func AuthRouter(router chi.Router, services *service.Service) {
 
 		ctx := r.Context()
 
-		res := services.Auth.UserLogin.Handle(ctx, body)
+		res, err := services.Auth.UserLogin.Handle(ctx, body)
+
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(err.Error())
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(res)
@@ -36,7 +42,13 @@ func AuthRouter(router chi.Router, services *service.Service) {
 
 		ctx := r.Context()
 
-		res := services.Auth.UserRegister.Handle(ctx, body)
+		res, err := services.Auth.UserRegister.Handle(ctx, body)
+
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(err.Error())
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(res)

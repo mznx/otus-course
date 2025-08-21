@@ -9,6 +9,7 @@ CREATE TABLE "users" (
 CREATE TABLE "user_auth" (
     user_id text NOT NULL,
     pass_hash text NOT NULL,
+    token text NOT NULL,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp
 );

@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"monolith/domain/user"
+	"monolith/helper"
 )
 
 type RegisterRequest struct {
@@ -12,7 +13,7 @@ type RegisterRequest struct {
 }
 
 type RegisterResponse struct {
-	UserId string `json:"user_id"`
+	UserID string `json:"user_id"`
 }
 
 type UserRegisterService struct {
@@ -23,12 +24,14 @@ func NewUserRegisterService(userRepository user.Repository) *UserRegisterService
 	return &UserRegisterService{userRepository: userRepository}
 }
 
-func (s *UserRegisterService) Handle(ctx context.Context, data RegisterRequest) RegisterResponse {
+func (s *UserRegisterService) Handle(ctx context.Context, data RegisterRequest) (*RegisterResponse, error) {
 	u := user.NewUser(data.FirstName, data.SecondName)
 
-	if err := s.userRepository.Create(ctx, u, data.Password); err != nil {
-		// err
+	passHash := helper.HashingPassword(data.Password)
+
+	if err := s.userRepository.Create(ctx, u, passHash); err != nil {
+		return nil, err
 	}
 
-	return RegisterResponse{UserId: u.ID}
+	return &RegisterResponse{UserID: u.ID}, nil
 }
