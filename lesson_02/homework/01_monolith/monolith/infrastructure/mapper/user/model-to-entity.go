@@ -12,3 +12,13 @@ func ModelToUser(u user_model.User) *user.User {
 		SecondName: u.SecondName,
 	}
 }
+
+func ModelsToUsers(users []user_model.User) []*user.User {
+	result := []*user.User{}
+
+	for _, u := range users {
+		result = append(result, ModelToUser(u))
+	}
+
+	return result
+}

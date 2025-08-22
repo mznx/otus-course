@@ -13,3 +13,12 @@ CREATE TABLE "user_auth" (
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp
 );
+
+CREATE TABLE "friends" (
+    user_id text NOT NULL,
+    friend_id text NOT NULL,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
+
+    primary key (user_id, friend_id)
+);
