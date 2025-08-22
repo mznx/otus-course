@@ -7,6 +7,8 @@ type Repository interface {
 
 	FindByName(ctx context.Context, firstName string, lastName string) ([]*User, error)
 
+	FindByToken(ctx context.Context, token string) (*User, error)
+
 	GetPasswordHash(ctx context.Context, userId string) (string, error)
 
 	CheckIfUsersAreFriends(ctx context.Context, userId string, friendId string) (bool, error)

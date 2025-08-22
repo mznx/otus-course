@@ -43,6 +43,16 @@ func (r *UserPgRepository) FindByName(ctx context.Context, firstName string, sec
 	return user_mapper.ModelsToUsers(users), nil
 }
 
+func (r *UserPgRepository) FindByToken(ctx context.Context, token string) (*user.User, error) {
+	u := user_model.User{}
+
+	if err := r.db.Get(&u, "SELECT users.* FROM users INNER JOIN user_auth ON users.id = user_auth.user_id WHERE user_auth.token=$1", token); err != nil {
+		return nil, err
+	}
+
+	return user_mapper.ModelToUser(u), nil
+}
+
 func (r *UserPgRepository) GetPasswordHash(ctx context.Context, userId string) (string, error) {
 	ua := user_auth_model.UserAuth{}
 
