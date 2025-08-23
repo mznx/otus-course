@@ -53,6 +53,21 @@ func (r *UserPgRepository) FindByToken(ctx context.Context, token string) (*user
 	return user_mapper.ModelToUser(user), nil
 }
 
+func (r *UserPgRepository) FindUserFriends(ctx context.Context, userId string) ([]*user.User, error) {
+	var users []user_model.User
+
+	err := r.db.SelectContext(ctx, &users, `
+		SELECT users.* FROM users
+		INNER JOIN friends ON users.id = friends.user_id
+		WHERE friends.friend_id=$1`, userId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user_mapper.ModelsToUsers(users), nil
+}
+
 func (r *UserPgRepository) GetPasswordHash(ctx context.Context, userId string) (string, error) {
 	var userAuth user_auth_model.UserAuth
 

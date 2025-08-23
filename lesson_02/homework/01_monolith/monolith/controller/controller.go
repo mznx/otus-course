@@ -3,6 +3,7 @@ package controller
 import (
 	"monolith/controller/auth"
 	"monolith/controller/dialog"
+	"monolith/controller/post"
 	"monolith/controller/user"
 	"monolith/service"
 	"net/http"
@@ -23,6 +24,7 @@ func NewRouter(services *service.Service) *chi.Mux {
 
 	auth.AuthRouter(router, services)
 	user.UserRouter(router, services)
+	post.PostRouter(router, services)
 	dialog.DialogRouter(router, services)
 
 	return router

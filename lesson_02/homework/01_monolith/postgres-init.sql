@@ -55,3 +55,11 @@ CREATE TABLE "dialog_private" (
     created_at timestamp NOT NULL default current_timestamp,
     updated_at timestamp NOT NULL default current_timestamp
 );
+
+CREATE TABLE "posts" (
+    id text primary key,
+    author_id text NOT NULL,
+    text text NOT NULL,
+    created_at timestamp NOT NULL default current_timestamp,
+    updated_at timestamp NOT NULL default current_timestamp
+);
