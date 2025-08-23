@@ -24,19 +24,19 @@ func NewUserPgRepository(db *sqlx.DB) *UserPgRepository {
 }
 
 func (r *UserPgRepository) FindById(ctx context.Context, userId string) (*user.User, error) {
-	u := user_model.User{}
+	var user user_model.User
 
-	if err := r.db.Get(&u, "SELECT * FROM users WHERE id=$1", userId); err != nil {
+	if err := r.db.Get(&user, "SELECT * FROM users WHERE id=$1", userId); err != nil {
 		return nil, err
 	}
 
-	return user_mapper.ModelToUser(u), nil
+	return user_mapper.ModelToUser(user), nil
 }
 
 func (r *UserPgRepository) FindByName(ctx context.Context, firstName string, secondName string) ([]*user.User, error) {
-	users := []user_model.User{}
+	var users []user_model.User
 
-	if err := r.db.SelectContext(ctx, users, "SELECT * FROM users WHERE first_name=$1 AND second_name=$2", firstName, secondName); err != nil {
+	if err := r.db.SelectContext(ctx, &users, "SELECT * FROM users WHERE first_name=$1 AND second_name=$2", firstName, secondName); err != nil {
 		return nil, err
 	}
 
@@ -44,23 +44,23 @@ func (r *UserPgRepository) FindByName(ctx context.Context, firstName string, sec
 }
 
 func (r *UserPgRepository) FindByToken(ctx context.Context, token string) (*user.User, error) {
-	u := user_model.User{}
+	var user user_model.User
 
-	if err := r.db.Get(&u, "SELECT users.* FROM users INNER JOIN user_auth ON users.id = user_auth.user_id WHERE user_auth.token=$1", token); err != nil {
+	if err := r.db.Get(&user, "SELECT users.* FROM users INNER JOIN user_auth ON users.id = user_auth.user_id WHERE user_auth.token=$1", token); err != nil {
 		return nil, err
 	}
 
-	return user_mapper.ModelToUser(u), nil
+	return user_mapper.ModelToUser(user), nil
 }
 
 func (r *UserPgRepository) GetPasswordHash(ctx context.Context, userId string) (string, error) {
-	ua := user_auth_model.UserAuth{}
+	var userAuth user_auth_model.UserAuth
 
-	if err := r.db.Get(&ua, "SELECT * FROM user_auth WHERE user_id=$1", userId); err != nil {
+	if err := r.db.Get(&userAuth, "SELECT * FROM user_auth WHERE user_id=$1", userId); err != nil {
 		return "", err
 	}
 
-	return ua.PassHash, nil
+	return userAuth.PassHash, nil
 }
 
 func (r *UserPgRepository) CheckIfUsersAreFriends(ctx context.Context, userId string, friendId string) (bool, error) {
