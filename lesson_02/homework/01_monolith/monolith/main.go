@@ -6,8 +6,6 @@ import (
 	"monolith/infrastructure/storage/postgres"
 	"monolith/service"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func main() {
@@ -18,14 +16,7 @@ func main() {
 
 	services := service.NewService(repositories)
 
-	router := chi.NewRouter()
-
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("OK"))
-	})
-
-	controller.AuthRouter(router, services)
-	controller.UserRouter(router, services)
+	router := controller.NewRouter(services)
 
 	http.ListenAndServe(":3000", router)
 }

@@ -12,13 +12,15 @@ type Storage struct {
 }
 
 func Connect() *Storage {
-	db, err := sqlx.Connect("postgres", "host=postgres user=user password=pass dbname=test sslmode=disable")
+	db, err := sqlx.Connect("postgres", "host=127.0.0.1 user=user password=pass dbname=test sslmode=disable")
 
 	log.Println("connect ...")
 
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	log.Println("database connected")
 
 	return &Storage{db: db}
 }
