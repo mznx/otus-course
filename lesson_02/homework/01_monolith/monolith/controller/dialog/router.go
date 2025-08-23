@@ -3,9 +3,7 @@ package dialog
 import (
 	"encoding/json"
 	"monolith/controller/middleware"
-	"monolith/helper"
 	"monolith/service"
-	"monolith/service/dialog"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -15,49 +13,34 @@ func DialogRouter(router chi.Router, services *service.Service) {
 	router.Route("/dialog/{user_id}/send", func(r chi.Router) {
 		r.Use(middleware.CheckToken(services))
 		r.Post("/", func(w http.ResponseWriter, r *http.Request) {
-			var body struct {
-				Text string `json:"text"`
-			}
+			data, err := GenerateSendMessageData(r)
 
-			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
 
-			data := dialog.SendMessageRequest{
-				SenderID:    helper.GetAuthorizedUserId(r),
-				RecipientID: chi.URLParam(r, "user_id"),
-				Text:        body.Text,
-			}
-
-			ctx := r.Context()
-
-			_, err := services.Dialog.SendMessage.Handle(ctx, data)
+			_, err = services.Dialog.SendMessage.Handle(r.Context(), data)
 
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				json.NewEncoder(w).Encode(err.Error())
 				return
 			}
-
-			w.Header().Set("Content-Type", "application/json")
 		})
 	})
 
 	router.Route("/dialog/{user_id}/list", func(r chi.Router) {
 		r.Use(middleware.CheckToken(services))
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			senderId := helper.GetAuthorizedUserId(r)
-			recipientId := chi.URLParam(r, "user_id")
+			data, err := GenerateGetListMessagesData(r)
 
-			data := dialog.GetListMessagesRequest{
-				SenderID:    senderId,
-				RecipientID: recipientId,
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
 			}
 
-			ctx := r.Context()
-
-			res, err := services.Dialog.GetListMessages.Handle(ctx, data)
+			res, err := services.Dialog.GetListMessages.Handle(r.Context(), data)
 
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
@@ -65,10 +48,8 @@ func DialogRouter(router chi.Router, services *service.Service) {
 				return
 			}
 
-			resp := GenerateGetListMessagesResponse(res.Messages, senderId, recipientId)
-
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			json.NewEncoder(w).Encode(GenerateGetListMessagesResponse(res, data.SenderID, data.RecipientID))
 		})
 	})
 }

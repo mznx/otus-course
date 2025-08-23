@@ -5,15 +5,13 @@ import (
 	"monolith/domain/user"
 )
 
-type SearchRequest struct {
-	FirstName  string `json:"first_name"`
-	SecondName string `json:"last_name"`
+type SearchData struct {
+	FirstName  string
+	SecondName string
 }
 
-type SearchResponse struct {
-	UserID     string `json:"id"`
-	FirstName  string `json:"first_name"`
-	SecondName string `json:"second_name"`
+type SearchResult struct {
+	Users []*user.User
 }
 
 type UserSearchService struct {
@@ -24,18 +22,12 @@ func NewUserSearchService(userRepository user.Repository) *UserSearchService {
 	return &UserSearchService{userRepository: userRepository}
 }
 
-func (s *UserSearchService) Handle(ctx context.Context, data SearchRequest) ([]*SearchResponse, error) {
+func (s *UserSearchService) Handle(ctx context.Context, data *SearchData) (*SearchResult, error) {
 	users, err := s.userRepository.FindByName(ctx, data.FirstName, data.SecondName)
 
 	if err != nil {
 		return nil, err
 	}
 
-	result := []*SearchResponse{}
-
-	for _, u := range users {
-		result = append(result, &SearchResponse{UserID: u.ID, FirstName: u.FirstName, SecondName: u.SecondName})
-	}
-
-	return result, nil
+	return &SearchResult{Users: users}, nil
 }

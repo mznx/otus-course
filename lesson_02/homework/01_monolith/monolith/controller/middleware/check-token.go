@@ -13,7 +13,7 @@ func CheckToken(services *service.Service) func(h http.Handler) http.Handler {
 			authorization := r.Header.Get("Authorization")
 			token := strings.TrimSpace(strings.Replace(authorization, "Bearer", "", 1))
 
-			res, err := services.Auth.UserCheckToken.Handle(r.Context(), auth.CheckTokenRequest{Token: token})
+			res, err := services.Auth.UserCheckToken.Handle(r.Context(), &auth.CheckTokenData{Token: token})
 
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusForbidden)

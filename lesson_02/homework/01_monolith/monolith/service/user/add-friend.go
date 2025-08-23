@@ -6,9 +6,9 @@ import (
 	"monolith/domain/user"
 )
 
-type AddFriendRequest struct {
-	UserID   string `json:"user_id"`
-	FriendID string `json:"friend_id"`
+type AddFriendData struct {
+	UserID   string
+	FriendID string
 }
 
 type UserAddFriendService struct {
@@ -19,7 +19,7 @@ func NewUserAddFriendService(userRepository user.Repository) *UserAddFriendServi
 	return &UserAddFriendService{userRepository: userRepository}
 }
 
-func (s *UserAddFriendService) Handle(ctx context.Context, data AddFriendRequest) error {
+func (s *UserAddFriendService) Handle(ctx context.Context, data *AddFriendData) error {
 	usersAreFriends, err := s.userRepository.CheckIfUsersAreFriends(ctx, data.UserID, data.FriendID)
 
 	if err != nil {

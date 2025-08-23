@@ -3,7 +3,6 @@ package auth
 import (
 	"encoding/json"
 	"monolith/service"
-	"monolith/service/auth"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -11,16 +10,14 @@ import (
 
 func AuthRouter(router chi.Router, services *service.Service) {
 	router.Post("/login", func(w http.ResponseWriter, r *http.Request) {
-		body := auth.LoginRequest{}
+		data, err := GenerateLoginData(r)
 
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		ctx := r.Context()
-
-		res, err := services.Auth.UserLogin.Handle(ctx, body)
+		res, err := services.Auth.UserLogin.Handle(r.Context(), data)
 
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -29,20 +26,18 @@ func AuthRouter(router chi.Router, services *service.Service) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(res)
+		json.NewEncoder(w).Encode(GenerateLoginResponse(res))
 	})
 
 	router.Post("/user/register", func(w http.ResponseWriter, r *http.Request) {
-		body := auth.RegisterRequest{}
+		data, err := GenerateRegisterData(r)
 
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		ctx := r.Context()
-
-		res, err := services.Auth.UserRegister.Handle(ctx, body)
+		res, err := services.Auth.UserRegister.Handle(r.Context(), data)
 
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -51,6 +46,6 @@ func AuthRouter(router chi.Router, services *service.Service) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(res)
+		json.NewEncoder(w).Encode(GenerateRegisterResponse(res))
 	})
 }

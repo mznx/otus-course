@@ -6,12 +6,12 @@ import (
 	"monolith/domain/dialog"
 )
 
-type GetListMessagesRequest struct {
-	SenderID    string `json:"sender_id"`
-	RecipientID string `json:"recipient_id"`
+type GetListMessagesData struct {
+	SenderID    string
+	RecipientID string
 }
 
-type GetListMessagesResponse struct {
+type GetListMessagesResult struct {
 	Messages []*dialog.Message
 }
 
@@ -23,7 +23,7 @@ func NewDialogGetListMessagesService(dialogRepository dialog.Repository) *Dialog
 	return &DialogGetListMessagesService{dialogRepository: dialogRepository}
 }
 
-func (s *DialogGetListMessagesService) Handle(ctx context.Context, data GetListMessagesRequest) (*GetListMessagesResponse, error) {
+func (s *DialogGetListMessagesService) Handle(ctx context.Context, data *GetListMessagesData) (*GetListMessagesResult, error) {
 	dialogId, err := s.dialogRepository.FindDialogBetweenUsers(ctx, data.SenderID, data.RecipientID)
 
 	if err != nil {
@@ -40,5 +40,5 @@ func (s *DialogGetListMessagesService) Handle(ctx context.Context, data GetListM
 		return nil, err
 	}
 
-	return &GetListMessagesResponse{Messages: messages}, nil
+	return &GetListMessagesResult{Messages: messages}, nil
 }

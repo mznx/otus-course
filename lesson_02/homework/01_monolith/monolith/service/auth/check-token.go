@@ -5,12 +5,12 @@ import (
 	"monolith/domain/user"
 )
 
-type CheckTokenRequest struct {
-	Token string `json:"token"`
+type CheckTokenData struct {
+	Token string
 }
 
-type CheckTokenResponse struct {
-	UserID string `json:"user_id"`
+type CheckTokenResult struct {
+	UserID string
 }
 
 type UserCheckTokenService struct {
@@ -21,12 +21,12 @@ func NewUserCheckTokenService(userRepository user.Repository) *UserCheckTokenSer
 	return &UserCheckTokenService{userRepository: userRepository}
 }
 
-func (s *UserCheckTokenService) Handle(ctx context.Context, data CheckTokenRequest) (*CheckTokenResponse, error) {
+func (s *UserCheckTokenService) Handle(ctx context.Context, data *CheckTokenData) (*CheckTokenResult, error) {
 	u, err := s.userRepository.FindByToken(ctx, data.Token)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &CheckTokenResponse{UserID: u.ID}, nil
+	return &CheckTokenResult{UserID: u.ID}, nil
 }

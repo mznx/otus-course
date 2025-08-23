@@ -7,13 +7,13 @@ import (
 	"monolith/helper"
 )
 
-type LoginRequest struct {
-	UserID   string `json:"id"`
-	Password string `json:"password"`
+type LoginData struct {
+	UserID   string
+	Password string
 }
 
-type LoginResponse struct {
-	Token string `json:"token"`
+type LoginResult struct {
+	Token string
 }
 
 type UserLoginService struct {
@@ -24,7 +24,7 @@ func NewUserLoginService(userRepository user.Repository) *UserLoginService {
 	return &UserLoginService{userRepository: userRepository}
 }
 
-func (s *UserLoginService) Handle(ctx context.Context, data LoginRequest) (*LoginResponse, error) {
+func (s *UserLoginService) Handle(ctx context.Context, data *LoginData) (*LoginResult, error) {
 	passHash, err := s.userRepository.GetPasswordHash(ctx, data.UserID)
 
 	if err != nil {
@@ -45,5 +45,5 @@ func (s *UserLoginService) Handle(ctx context.Context, data LoginRequest) (*Logi
 		return nil, err
 	}
 
-	return &LoginResponse{Token: token}, nil
+	return &LoginResult{Token: token}, nil
 }

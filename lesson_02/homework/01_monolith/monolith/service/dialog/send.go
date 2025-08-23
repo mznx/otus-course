@@ -7,14 +7,14 @@ import (
 	"monolith/domain/user"
 )
 
-type SendMessageRequest struct {
-	SenderID    string `json:"sender_id"`
-	RecipientID string `json:"recipient_id"`
-	Text        string `json:"text"`
+type SendMessageData struct {
+	SenderID    string
+	RecipientID string
+	Text        string
 }
 
-type SendMessageResponse struct {
-	MessageID string `json:"message_id"`
+type SendMessageResult struct {
+	MessageID string
 }
 
 type DialogSendMessageService struct {
@@ -26,7 +26,7 @@ func NewDialogSendMessageService(userRepository user.Repository, dialogRepositor
 	return &DialogSendMessageService{userRepository: userRepository, dialogRepository: dialogRepository}
 }
 
-func (s *DialogSendMessageService) Handle(ctx context.Context, data SendMessageRequest) (*SendMessageResponse, error) {
+func (s *DialogSendMessageService) Handle(ctx context.Context, data *SendMessageData) (*SendMessageResult, error) {
 	if err := s.checkIfRecipientExists(ctx, data.RecipientID); err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (s *DialogSendMessageService) Handle(ctx context.Context, data SendMessageR
 		return nil, err
 	}
 
-	return &SendMessageResponse{MessageID: message.ID}, nil
+	return &SendMessageResult{MessageID: message.ID}, nil
 }
 
 func (s *DialogSendMessageService) checkIfRecipientExists(ctx context.Context, recipientId string) error {

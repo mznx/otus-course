@@ -5,14 +5,12 @@ import (
 	"monolith/domain/user"
 )
 
-type GetByIdRequest struct {
-	UserID string `json:"id"`
+type GetByIdData struct {
+	UserID string
 }
 
-type GetByIdResponse struct {
-	UserID     string `json:"id"`
-	FirstName  string `json:"first_name"`
-	SecondName string `json:"second_name"`
+type GetByIdResult struct {
+	User *user.User
 }
 
 type UserGetByIdService struct {
@@ -23,12 +21,12 @@ func NewUserGetByIdService(userRepository user.Repository) *UserGetByIdService {
 	return &UserGetByIdService{userRepository: userRepository}
 }
 
-func (s *UserGetByIdService) Handle(ctx context.Context, data GetByIdRequest) (*GetByIdResponse, error) {
+func (s *UserGetByIdService) Handle(ctx context.Context, data *GetByIdData) (*GetByIdResult, error) {
 	u, err := s.userRepository.FindById(ctx, data.UserID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetByIdResponse{UserID: u.ID, FirstName: u.FirstName, SecondName: u.SecondName}, nil
+	return &GetByIdResult{User: u}, nil
 }

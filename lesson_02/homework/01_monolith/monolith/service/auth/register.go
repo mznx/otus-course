@@ -6,14 +6,14 @@ import (
 	"monolith/helper"
 )
 
-type RegisterRequest struct {
-	FirstName  string `json:"first_name"`
-	SecondName string `json:"second_name"`
-	Password   string `json:"password"`
+type RegisterData struct {
+	FirstName  string
+	SecondName string
+	Password   string
 }
 
-type RegisterResponse struct {
-	UserID string `json:"user_id"`
+type RegisterResult struct {
+	UserID string
 }
 
 type UserRegisterService struct {
@@ -24,7 +24,7 @@ func NewUserRegisterService(userRepository user.Repository) *UserRegisterService
 	return &UserRegisterService{userRepository: userRepository}
 }
 
-func (s *UserRegisterService) Handle(ctx context.Context, data RegisterRequest) (*RegisterResponse, error) {
+func (s *UserRegisterService) Handle(ctx context.Context, data *RegisterData) (*RegisterResult, error) {
 	u := user.NewUser(data.FirstName, data.SecondName)
 
 	passHash := helper.HashingPassword(data.Password)
@@ -33,5 +33,5 @@ func (s *UserRegisterService) Handle(ctx context.Context, data RegisterRequest) 
 		return nil, err
 	}
 
-	return &RegisterResponse{UserID: u.ID}, nil
+	return &RegisterResult{UserID: u.ID}, nil
 }

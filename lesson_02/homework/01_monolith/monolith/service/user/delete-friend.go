@@ -6,9 +6,9 @@ import (
 	"monolith/domain/user"
 )
 
-type DeleteFriendRequest struct {
-	UserID   string `json:"user_id"`
-	FriendID string `json:"friend_id"`
+type DeleteFriendData struct {
+	UserID   string
+	FriendID string
 }
 
 type UserDeleteFriendService struct {
@@ -19,7 +19,7 @@ func NewUserDeleteFriendService(userRepository user.Repository) *UserDeleteFrien
 	return &UserDeleteFriendService{userRepository: userRepository}
 }
 
-func (s *UserDeleteFriendService) Handle(ctx context.Context, data DeleteFriendRequest) error {
+func (s *UserDeleteFriendService) Handle(ctx context.Context, data *DeleteFriendData) error {
 	usersAreFriends, err := s.userRepository.CheckIfUsersAreFriends(ctx, data.UserID, data.FriendID)
 
 	if err != nil {
