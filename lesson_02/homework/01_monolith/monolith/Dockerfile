@@ -29,6 +29,6 @@ EXPOSE 3000
 
 WORKDIR /app
 
-COPY --from=builder /monolith /monolith
+COPY --from=builder /monolith .
 
-CMD ["/monolith"]
+CMD ["./monolith"]

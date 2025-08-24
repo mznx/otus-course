@@ -2,6 +2,7 @@ package main
 
 import (
 	"monolith/controller"
+	"monolith/infrastructure/config"
 	"monolith/infrastructure/storage"
 	"monolith/infrastructure/storage/postgres"
 	"monolith/service"
@@ -9,7 +10,9 @@ import (
 )
 
 func main() {
-	s := storage.Connect()
+	config := config.ReadConfig()
+
+	s := storage.Connect(config)
 	defer s.Disconnect()
 
 	repositories := postgres.NewRepository(s.GetDB())

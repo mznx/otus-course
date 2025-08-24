@@ -5,6 +5,8 @@ services:
         container_name: 'monolith'
         ports:
             - '3000:3000'
+        volumes:
+            - ./config.dev.json:/app/config.json
         depends_on:
             - postgres
 
@@ -16,5 +18,7 @@ services:
             POSTGRES_PASSWORD: pass
             POSTGRES_USER: user
             POSTGRES_DB: test
+        # ports:
+        #     - '5432:5432'
         volumes:
             - ./postgres-init.sql:/docker-entrypoint-initdb.d/init.sql

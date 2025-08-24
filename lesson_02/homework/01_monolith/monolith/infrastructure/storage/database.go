@@ -1,7 +1,9 @@
 package storage
 
 import (
+	"fmt"
 	"log"
+	"monolith/infrastructure/config"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -11,10 +13,14 @@ type Storage struct {
 	db *sqlx.DB
 }
 
-func Connect() *Storage {
-	db, err := sqlx.Connect("postgres", "host=127.0.0.1 user=user password=pass dbname=test sslmode=disable")
+func Connect(config *config.Config) *Storage {
+	connString := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.DB.PG_HOST, config.DB.PG_PORT, config.DB.PG_USER, config.DB.PG_PASS, config.DB.PG_DBNAME)
 
-	log.Println("connect ...")
+	log.Println("connect to database ...")
+
+	db, err := sqlx.Connect("postgres", connString)
 
 	if err != nil {
 		log.Fatalln(err)
