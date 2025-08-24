@@ -46,11 +46,16 @@ func (r *UserPgRepository) FindByName(ctx context.Context, firstName string, sec
 func (r *UserPgRepository) FindByToken(ctx context.Context, token string) (*user.User, error) {
 	var user user_model.User
 
-	if err := r.db.Get(&user, "SELECT users.* FROM users INNER JOIN user_auth ON users.id = user_auth.user_id WHERE user_auth.token=$1", token); err != nil {
+	err := r.db.Get(&user, "SELECT users.* FROM users INNER JOIN user_auth ON users.id = user_auth.user_id WHERE user_auth.token=$1", token)
+
+	switch err {
+	case nil:
+		return user_mapper.ModelToUser(user), nil
+	case sql.ErrNoRows:
+		return nil, nil
+	default:
 		return nil, err
 	}
-
-	return user_mapper.ModelToUser(user), nil
 }
 
 func (r *UserPgRepository) FindUserFriends(ctx context.Context, userId string) ([]*user.User, error) {

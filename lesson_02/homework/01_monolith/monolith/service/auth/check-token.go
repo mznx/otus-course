@@ -28,5 +28,9 @@ func (s *UserCheckTokenService) Handle(ctx context.Context, data *CheckTokenData
 		return nil, err
 	}
 
+	if u == nil {
+		return nil, nil
+	}
+
 	return &CheckTokenResult{UserID: u.ID}, nil
 }

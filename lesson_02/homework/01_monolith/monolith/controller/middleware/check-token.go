@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"monolith/service"
 	"monolith/service/auth"
 	"net/http"
@@ -16,7 +17,13 @@ func CheckToken(services *service.Service) func(h http.Handler) http.Handler {
 			res, err := services.Auth.UserCheckToken.Handle(r.Context(), &auth.CheckTokenData{Token: token})
 
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusForbidden)
+				log.Println("Authorization error:", err)
+				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				return
+			}
+
+			if res == nil {
+				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
 
