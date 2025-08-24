@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"monolith/controller/middleware"
 	"monolith/service"
 	"net/http"
 
@@ -47,5 +48,13 @@ func AuthRouter(router chi.Router, services *service.Service) {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(GenerateRegisterResponse(res))
+	})
+
+	router.Route("/user/token/validate", func(r chi.Router) {
+		r.Use(middleware.CheckToken(services))
+		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(GenerateTokenValidateResponse(r))
+		})
 	})
 }

@@ -18,3 +18,7 @@ type RegisterRequest struct {
 type RegisterResponse struct {
 	UserID string `json:"user_id"`
 }
+
+type TokenValidateResponse struct {
+	UserID string `json:"user_id"`
+}

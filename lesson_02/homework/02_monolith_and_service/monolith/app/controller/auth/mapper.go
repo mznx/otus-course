@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"monolith/helper"
 	auth_service "monolith/service/auth"
 	"net/http"
 )
@@ -42,5 +43,11 @@ func GenerateRegisterData(r *http.Request) (*auth_service.RegisterData, error) {
 func GenerateRegisterResponse(result *auth_service.RegisterResult) *RegisterResponse {
 	return &RegisterResponse{
 		UserID: result.UserID,
+	}
+}
+
+func GenerateTokenValidateResponse(r *http.Request) *TokenValidateResponse {
+	return &TokenValidateResponse{
+		UserID: helper.GetAuthorizedUserId(r),
 	}
 }
