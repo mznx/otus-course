@@ -1,0 +1,33 @@
+services:
+    monolith:
+        image: 'monolith_02_02:latest'
+        restart: 'always'
+        container_name: 'monolith'
+        ports:
+            - '3000:3000'
+        volumes:
+            - ./monolith/config.dev.json:/app/config.json
+        depends_on:
+            - postgres-monolith
+
+    postgres-monolith:
+        image: 'postgres'
+        restart: 'always'
+        container_name: 'postgres-monolith'
+        environment:
+            POSTGRES_PASSWORD: pass
+            POSTGRES_USER: user
+            POSTGRES_DB: test
+        volumes:
+            - ./monolith/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    postgres-dialog:
+        image: 'postgres'
+        restart: 'always'
+        container_name: 'postgres-dialog'
+        environment:
+            POSTGRES_PASSWORD: pass
+            POSTGRES_USER: user
+            POSTGRES_DB: test
+        # volumes:
+        #     - ./monolith/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
