@@ -1,0 +1,79 @@
+package dialog
+
+import (
+	"context"
+	"dialog-service/domain/dialog"
+	"dialog-service/domain/user"
+	"errors"
+)
+
+type SendMessageData struct {
+	SenderID    string
+	RecipientID string
+	Text        string
+}
+
+type SendMessageResult struct {
+	MessageID string
+}
+
+type DialogSendMessageService struct {
+	userRepository   user.Repository
+	dialogRepository dialog.Repository
+}
+
+func NewDialogSendMessageService(userRepository user.Repository, dialogRepository dialog.Repository) *DialogSendMessageService {
+	return &DialogSendMessageService{userRepository: userRepository, dialogRepository: dialogRepository}
+}
+
+func (s *DialogSendMessageService) Handle(ctx context.Context, data *SendMessageData) (*SendMessageResult, error) {
+	if err := s.checkIfRecipientExists(ctx, data.RecipientID); err != nil {
+		return nil, err
+	}
+
+	dialogId, err := s.getDialogId(ctx, data.SenderID, data.RecipientID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	message := dialog.NewMessage(dialogId, data.SenderID, data.Text)
+
+	if err := s.dialogRepository.SendMessage(ctx, message); err != nil {
+		return nil, err
+	}
+
+	return &SendMessageResult{MessageID: message.ID}, nil
+}
+
+func (s *DialogSendMessageService) checkIfRecipientExists(ctx context.Context, recipientId string) error {
+	recipient, err := s.userRepository.FindById(ctx, recipientId) // TODO
+
+	if err != nil {
+		return err
+	}
+
+	if recipient == nil {
+		return errors.New("recipient not found")
+	}
+
+	return nil
+}
+
+func (s *DialogSendMessageService) getDialogId(ctx context.Context, userId1 string, userId2 string) (string, error) {
+	dialogId, err := s.dialogRepository.FindDialogBetweenUsers(ctx, userId1, userId2)
+
+	if err != nil {
+		return "", err
+	}
+
+	if dialogId == "" {
+		dialogId, err = s.dialogRepository.CreatePrivateDialog(ctx, userId1, userId2)
+
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return dialogId, nil
+}

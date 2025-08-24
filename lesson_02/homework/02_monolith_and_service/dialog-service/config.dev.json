@@ -1,0 +1,9 @@
+{
+	"db": {
+		"host": "postgres-dialog",
+		"port": "5432",
+		"user": "user",
+		"pass": "pass",
+		"dbname": "test"
+	}
+}
