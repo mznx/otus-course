@@ -9,10 +9,8 @@ type User struct {
 }
 
 func NewUser(firstName string, secondName string) *User {
-	id := uuid.New()
-
 	return &User{
-		ID:         id.String(),
+		ID:         uuid.New().String(),
 		FirstName:  firstName,
 		SecondName: secondName,
 	}

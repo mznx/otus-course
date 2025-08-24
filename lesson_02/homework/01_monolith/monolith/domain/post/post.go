@@ -9,10 +9,8 @@ type Post struct {
 }
 
 func NewPost(authorId string, text string) *Post {
-	id := uuid.New()
-
 	return &Post{
-		ID:       id.String(),
+		ID:       uuid.New().String(),
 		AuthorID: authorId,
 		Text:     text,
 	}
