@@ -1,13 +1,13 @@
 package auth
 
-import "dialog-service/infrastructure/storage"
+import "dialog-service/infrastructure/api"
 
 type AuthService struct {
 	UserCheckToken *UserCheckTokenService
 }
 
-func NewService(repositories *storage.Repository) *AuthService {
+func NewService(api *api.ExternalApi) *AuthService {
 	return &AuthService{
-		UserCheckToken: NewUserCheckTokenService(),
+		UserCheckToken: NewUserCheckTokenService(api.Auth),
 	}
 }

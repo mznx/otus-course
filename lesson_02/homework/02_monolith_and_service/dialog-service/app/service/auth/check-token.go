@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"dialog-service/domain/auth"
 )
 
 type CheckTokenData struct {
@@ -12,14 +13,20 @@ type CheckTokenResult struct {
 	UserID string
 }
 
-type UserCheckTokenService struct{}
+type UserCheckTokenService struct {
+	AuthApi auth.Api
+}
 
-func NewUserCheckTokenService() *UserCheckTokenService {
-	return &UserCheckTokenService{}
+func NewUserCheckTokenService(authApi auth.Api) *UserCheckTokenService {
+	return &UserCheckTokenService{AuthApi: authApi}
 }
 
 func (s *UserCheckTokenService) Handle(ctx context.Context, data *CheckTokenData) (*CheckTokenResult, error) {
-	// TODO
+	userId, err := s.AuthApi.ValidateToken(ctx, data.Token)
 
-	return &CheckTokenResult{UserID: ""}, nil
+	if err != nil {
+		return nil, err
+	}
+
+	return &CheckTokenResult{UserID: userId}, nil
 }

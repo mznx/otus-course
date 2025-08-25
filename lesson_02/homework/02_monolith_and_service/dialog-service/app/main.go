@@ -2,6 +2,7 @@ package main
 
 import (
 	"dialog-service/controller"
+	"dialog-service/infrastructure/api"
 	"dialog-service/infrastructure/config"
 	"dialog-service/infrastructure/storage"
 	"dialog-service/infrastructure/storage/postgres"
@@ -17,7 +18,9 @@ func main() {
 
 	repositories := postgres.NewRepository(s.GetDB())
 
-	services := service.NewService(repositories)
+	externalApi := api.NewExternalApi(config)
+
+	services := service.NewService(repositories, externalApi)
 
 	router := controller.NewRouter(services)
 

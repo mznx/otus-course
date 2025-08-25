@@ -5,5 +5,10 @@
 		"user": "user",
 		"pass": "pass",
 		"dbname": "test"
+	},
+	"services": {
+		"auth": "monolith",
+		"user": "monolith",
+		"dialog": "dialog"
 	}
 }
