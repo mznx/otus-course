@@ -15,6 +15,6 @@ type Service struct {
 func NewService(repositories *storage.Repository, api *api.ExternalApi) *Service {
 	return &Service{
 		Auth:   auth.NewService(api),
-		Dialog: dialog.NewService(repositories),
+		Dialog: dialog.NewService(repositories, api),
 	}
 }

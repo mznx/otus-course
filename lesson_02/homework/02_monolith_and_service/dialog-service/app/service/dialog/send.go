@@ -18,12 +18,12 @@ type SendMessageResult struct {
 }
 
 type DialogSendMessageService struct {
-	userRepository   user.Repository
+	userApi          user.Api
 	dialogRepository dialog.Repository
 }
 
-func NewDialogSendMessageService(userRepository user.Repository, dialogRepository dialog.Repository) *DialogSendMessageService {
-	return &DialogSendMessageService{userRepository: userRepository, dialogRepository: dialogRepository}
+func NewDialogSendMessageService(dialogRepository dialog.Repository, userApi user.Api) *DialogSendMessageService {
+	return &DialogSendMessageService{dialogRepository: dialogRepository, userApi: userApi}
 }
 
 func (s *DialogSendMessageService) Handle(ctx context.Context, data *SendMessageData) (*SendMessageResult, error) {
@@ -47,7 +47,7 @@ func (s *DialogSendMessageService) Handle(ctx context.Context, data *SendMessage
 }
 
 func (s *DialogSendMessageService) checkIfRecipientExists(ctx context.Context, recipientId string) error {
-	recipient, err := s.userRepository.FindById(ctx, recipientId) // TODO
+	recipient, err := s.userApi.FindById(ctx, recipientId)
 
 	if err != nil {
 		return err
