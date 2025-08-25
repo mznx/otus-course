@@ -10,6 +10,17 @@ services:
         depends_on:
             - postgres-monolith
 
+    dialog-service:
+        image: 'dialog-service_02_02:latest'
+        restart: 'always'
+        container_name: 'dialog-service'
+        ports:
+            - '3001:3000'
+        volumes:
+            - ./dialog-service/config.dev.json:/app/config.json
+        depends_on:
+            - postgres-dialog
+
     postgres-monolith:
         image: 'postgres'
         restart: 'always'
@@ -29,5 +40,5 @@ services:
             POSTGRES_PASSWORD: pass
             POSTGRES_USER: user
             POSTGRES_DB: test
-        # volumes:
-        #     - ./monolith/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
+        volumes:
+            - ./dialog-service/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
