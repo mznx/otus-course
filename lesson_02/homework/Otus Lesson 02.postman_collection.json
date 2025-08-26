@@ -1,0 +1,528 @@
+{
+	"info": {
+		"_postman_id": "784dc9e1-bd14-45a0-ad33-588fc19a568b",
+		"name": "Otus Lesson 02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31995707"
+	},
+	"item": [
+		{
+			"name": "monolith",
+			"item": [
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"c2c1e27c-ea9a-4d11-aadc-016c43eb88e8\",\r\n    \"password\": \"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"John\",\r\n    \"second_name\": \"Doe\",\r\n    \"password\": \"222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user/get/{user_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/get/576c1f1e-cbf3-4fb8-b1c7-6ce387008afb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"get",
+								"576c1f1e-cbf3-4fb8-b1c7-6ce387008afb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user/get/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/search?first_name=Brad&last_name=Pitt",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "first_name",
+									"value": "Brad"
+								},
+								{
+									"key": "last_name",
+									"value": "Pitt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "friend/set/{user_id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/friend/set/9419ad1f-2c4c-42f3-9489-0c383937fbb3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"friend",
+								"set",
+								"9419ad1f-2c4c-42f3-9489-0c383937fbb3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "friend/delete/{user_id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/friend/delete/94b50850-5e0a-4d81-bcd7-e174c3bda2f2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"friend",
+								"delete",
+								"94b50850-5e0a-4d81-bcd7-e174c3bda2f2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Я тут 3й\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/post/create",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"post",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"b928c9b1-a7dd-4b74-b453-942903ffc357\",\r\n    \"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lectus mauris ultrices eros in cursus turpis massa.1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/post/update",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"post",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/delete/{post_id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/post/delete/b928c9b1-a7dd-4b74-b453-942903ffc357",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"post",
+								"delete",
+								"b928c9b1-a7dd-4b74-b453-942903ffc357"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/get/{post_id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/post/get/705710c3-b884-4f55-9897-93c3be6016f2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"post",
+								"get",
+								"705710c3-b884-4f55-9897-93c3be6016f2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/feed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/post/feed?limit=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"post",
+								"feed"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dialog/{user_id}/send",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Привет, друг!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/dialog/c2c1e27c-ea9a-4d11-aadc-016c43eb88e8/send",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dialog",
+								"c2c1e27c-ea9a-4d11-aadc-016c43eb88e8",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dialog/{user_id}/list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/dialog/c2c1e27c-ea9a-4d11-aadc-016c43eb88e8/list",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"dialog",
+								"c2c1e27c-ea9a-4d11-aadc-016c43eb88e8",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "dialog-service",
+			"item": [
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dialog/{user_id}/send",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Привет, друг!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/dialog/c2c1e27c-ea9a-4d11-aadc-016c43eb88e8/send",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"dialog",
+								"c2c1e27c-ea9a-4d11-aadc-016c43eb88e8",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dialog/{user_id}/list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/dialog/c2c1e27c-ea9a-4d11-aadc-016c43eb88e8/list",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"dialog",
+								"c2c1e27c-ea9a-4d11-aadc-016c43eb88e8",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{Token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Token",
+			"value": ""
+		}
+	]
+}
