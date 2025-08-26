@@ -5,5 +5,8 @@
 		"user": "user",
 		"pass": "pass",
 		"dbname": "test"
+	},
+	"services": {
+		"dialog": "http://dialog-service:3000"
 	}
 }

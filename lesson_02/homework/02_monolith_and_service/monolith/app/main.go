@@ -19,7 +19,7 @@ func main() {
 
 	services := service.NewService(repositories)
 
-	router := controller.NewRouter(services)
+	router := controller.NewRouter(services, config)
 
 	http.ListenAndServe(":3000", router)
 }

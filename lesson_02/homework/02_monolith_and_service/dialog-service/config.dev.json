@@ -7,8 +7,8 @@
 		"dbname": "test"
 	},
 	"services": {
-		"auth": "monolith",
-		"user": "monolith",
-		"dialog": "dialog"
+		"auth": "http://monolith:3000",
+		"user": "http://monolith:3000",
+		"dialog": "http://dialog-service:3000"
 	}
 }

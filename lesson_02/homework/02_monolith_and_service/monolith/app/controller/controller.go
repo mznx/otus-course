@@ -5,6 +5,7 @@ import (
 	"monolith/controller/dialog"
 	"monolith/controller/post"
 	"monolith/controller/user"
+	"monolith/infrastructure/config"
 	"monolith/service"
 	"net/http"
 
@@ -12,7 +13,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func NewRouter(services *service.Service) *chi.Mux {
+func NewRouter(services *service.Service, config *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
@@ -25,7 +26,7 @@ func NewRouter(services *service.Service) *chi.Mux {
 	auth.AuthRouter(router, services)
 	user.UserRouter(router, services)
 	post.PostRouter(router, services)
-	dialog.DialogRouter(router, services)
+	dialog.DialogRouter(router, services, config)
 
 	return router
 }

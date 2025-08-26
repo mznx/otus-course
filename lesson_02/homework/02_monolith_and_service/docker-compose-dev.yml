@@ -29,6 +29,8 @@ services:
             POSTGRES_PASSWORD: pass
             POSTGRES_USER: user
             POSTGRES_DB: test
+        # ports:
+        #     - '5432:5432'
         volumes:
             - ./monolith/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
 
@@ -40,5 +42,7 @@ services:
             POSTGRES_PASSWORD: pass
             POSTGRES_USER: user
             POSTGRES_DB: test
+        # ports:
+        #     - '5433:5432'
         volumes:
             - ./dialog-service/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
