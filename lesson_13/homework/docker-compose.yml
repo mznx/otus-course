@@ -1,0 +1,27 @@
+services:
+    backend:
+        build: './backend'
+        restart: 'always'
+        container_name: 'backend'
+        ports:
+            - '3000:3000'
+        environment:
+            PG_HOST: postgres
+            PG_PORT: 5432
+            PG_PASS: pass
+            PG_USER: admin
+            PG_DB: test
+        depends_on:
+            - postgres
+
+    postgres:
+        image: 'postgres:18.0-alpine3.22'
+        restart: 'always'
+        container_name: 'postgres'
+        environment:
+            POSTGRES_PASSWORD: pass
+            POSTGRES_USER: admin
+            POSTGRES_DB: test
+        volumes:
+            - ./postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./people.csv:/var/lib/postgresql/data/pgdata/people.csv
